@@ -1,5 +1,9 @@
 using System;
 using Katio.Business.Interfaces;
+using Katio.Data.Models;
+using Katio.Business.Utilities;
+using System.Security.Cryptography.X509Certificates;
+
 namespace Katio.Business.Services;
 
 public class BookService : IBookService
@@ -8,35 +12,67 @@ public class BookService : IBookService
     /// Busca todos los libros en la Base de datos.
     /// </summary>
     /// <returns>Lista de string.</returns>
-    public Task<IEnumerable<string>> GetAllBooks()
+    public async Task<IEnumerable<Books>> GetAllBooks()
     {
-        
-        Books book = new Books();
-        
-        // Texto
-        String tipo_string = "Cadena de Carácteres, que en realidad es un Array de Char.";
-        char tipo_char = 'H';
-
-        // Digitos - Números
-        sbyte tipo_sbyte = 127; // -128 -> 127
-        byte tipo_byte = 255; // 0 -> 255
-
-        short tipo_short = 32767; // -32768 -> 32767
-        ushort tipo_ushort = 65535; // 0 -> 65535
-
-        int tipo_int = 2147483647; // -2147483648 -> 2147483647
-        uint tipo_uint = 0; // 0 -> 4294967295
-
-        long tipo_long = 9223372036854775807; // -9223372036854775808 -> 9223372036854775809
-        ulong tipo_ulong = 18446744073709551615; // 18446744073709551615
-
-        // Get All books -> List<String> 10 títulos.
-        // Van a declarar una lista de string, y luego van a buscar si en esa lista está lo que pide el controlador.
-        // Buscar algo que no sea conseguible.
-        // Update del libro #4. Y devolver el registor modificado.
-        // Van a declarar todas las acciones del Libro que tienen en java aquí y dejarlas sin implementar.
-
-        
-        throw new NotImplementedException();
+        return Utilities.Utilities.CreateABooksList();
     }
+
+    public async Task<IEnumerable<Books>> GetById(int id)
+    {
+        if(id <= 0)
+        {
+            return new List<Books>();
+        }
+        // Lista de libros
+        var list = Utilities.Utilities.CreateABooksList();
+        
+        // for(int i = 0; i < list.Count; i++)
+        // {
+        //     if(list[i].Id == id)
+        //     {
+        //         var listBooks = new List<Books>();
+        //         listBooks.Add(list[i]);
+        //         return listBooks;
+        //     }
+        // }
+
+        // foreach (var item in list) // item le llamamos por convención.
+        // {
+        //     if(item.Id == id)
+        //     {
+        //         var listBooks = new List<Books>();
+        //         listBooks.Add(item);
+        //         return listBooks;
+        //     }
+        // }
+
+        // LINQ
+        var samir = list.Where(x => x.Id == id);
+
+
+        return samir;
+    }
+
+    public async Task<IEnumerable<Books>> GetByName(string name)
+    {
+        var heidy =  Utilities.Utilities.CreateABooksList()
+            .Where(X => X.Title.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+        return heidy;
+    }
+
+    public async Task<IEnumerable<Books>> Update(Books book)
+    {
+        var sara = Utilities.Utilities.CreateABooksList();
+        var updatedBook = sara.Where(x => x.Id == book.Id).FirstOrDefault();
+        sara.RemoveAt(book.Id);
+        //sara.Remove(updatedBook);
+        updatedBook.Published = book.Published;        
+        sara.Add(updatedBook);
+        return sara;
+    }
+    
+    
+    // Crear una lista de libros
+    // Crear una lista de Autores
+    // Intentar que el método de update funcione con una lista.
 }

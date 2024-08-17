@@ -11,4 +11,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Katio_net.Data\Katio_net.Data.csproj" />
+    <ProjectReference Include="..\Katio_net.Business\Katio_net.Business.csproj" />
+  </ItemGroup>
+
 </Project>

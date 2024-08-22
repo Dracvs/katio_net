@@ -1,14 +1,35 @@
+using System.Net;
+using System.Net.NetworkInformation;
+using Katio.Data.Dto;
 using Katio.Data.Models;
 
 namespace Katio.Business.Utilities;
 public static class Utilities
 {
-    public static List<Books> CreateABooksList()
+    
+    
+    #region BaseMessage Responses
+    public static BaseMessage<T> BuildResponse<T>(HttpStatusCode statusCode, string message, List<T>? elements = null)
+    where T : class
     {
-        List<Books> bookList = new List<Books>()
+        return new BaseMessage<T>()
+        {
+            StatusCode = statusCode,
+            Message = message,
+            TotalElements = (elements != null && elements.Any()) ? elements.Count : 0,
+            ResponseElements = elements ?? new List<T>()
+        };
+    }
+    #endregion
+    
+    
+    
+    public static List<Book> CreateABooksList()
+    {
+        List<Book> bookList = new List<Book>()
         {
             
-            new Books()
+            new Book()
             {
                 Title = "Cien años de soledad",
                 ISBN10 = "842047183",
@@ -19,7 +40,7 @@ public static class Utilities
                 Published = new DateTime(1967, 06, 05),
                 Id = 1
             },
-            new Books()
+            new Book()
             {
                 Title = "Huellas",
                 ISBN10 = "958427275",
@@ -30,7 +51,7 @@ public static class Utilities
                 Published = new DateTime(2019, 01, 01),
                 Id = 2
             },
-            new Books()
+            new Book()
             {
                 Title = "María",
                 ISBN10 = "148027292",
@@ -42,7 +63,7 @@ public static class Utilities
                 Id = 3
             },
             
-            new Books()
+            new Book()
             {
                 Title = "Sin Remedio",
                 ISBN10 = "3161484100",

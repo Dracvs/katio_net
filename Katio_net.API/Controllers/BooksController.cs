@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Katio.Data.Models;
 using Katio.Business.Interfaces;
+using System.Net;
 
 namespace Katio.API.Controllers;
 
@@ -42,9 +43,17 @@ public class BooksController : ControllerBase
 
     [HttpPost]
     [Route("Update")]
-    public async Task<IActionResult> Update(Books book)
+    public async Task<IActionResult> Update(Book book)
     {
         var response = await _bookService.Update(book);
         return response.Count() > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, "No se lo conseguí");
+    }
+
+    [HttpPost]
+    [Route("Create")]
+    public async Task<IActionResult> Create(Book book)
+    {
+        var response = await _bookService.CreateBook(book);
+        return response.StatusCode == System.Net.HttpStatusCode.OK ? Ok(response) : StatusCode((int)response.StatusCode, response);
     }
 }

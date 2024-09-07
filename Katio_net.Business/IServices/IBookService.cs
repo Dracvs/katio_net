@@ -9,10 +9,14 @@ public interface IBookService
     /// Busca todos los libros en la Base de datos.
     /// </summary>
     /// <returns>Lista de string.</returns>
-    Task<IEnumerable<Book>> GetAllBooks();
-    Task<IEnumerable<Book>> GetById(int id);
+    Task<BaseMessage<Book>> GetAllBooks();
+    Task<BaseMessage<Book>> GetById(int id);
 
     Task<IEnumerable<Book>> GetByName(string name);
+
+    Task<BaseMessage<Book>> GetByAuthor(int AuthorId);
+
+    Task<BaseMessage<Book>> GetByAuthor(String name);
 
     Task<BaseMessage<Book>> CreateBook(Book books);
 

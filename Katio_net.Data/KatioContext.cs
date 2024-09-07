@@ -10,4 +10,17 @@ public class KatioContext : DbContext
     {}
 
     public DbSet<Book> Books{get;set;} = null;
+    public DbSet<Author> Authors{get;set;} = null;
+
+    // protected override void OnModelCreating(ModelBuilder builder)
+    // {
+    //     if(builder == null)
+    //     { 
+    //         return;
+    //     }
+
+    //     builder.Entity<Book>().ToTable("Book").HasKey(k => k.Id);
+    //     builder.Entity<Author>().ToTable("Author").HasKey(k => k.Id);
+    //     base.OnModelCreating(builder);
+    // }
 }

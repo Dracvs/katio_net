@@ -2,7 +2,13 @@ using Katio.Business.Interfaces;
 using Katio.Data.Models;
 using Katio.Data.Dto;
 using Katio_net.Data;
+using Katio.Business.Utilities;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
+using System.Globalization;
+using Katio.Data;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Katio.Business.Services;
 
@@ -10,10 +16,12 @@ public class BookService : IBookService
 {
     
     private readonly KatioContext _context;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public BookService(KatioContext context)
+    public BookService(KatioContext context, IUnitOfWork unitOfWork)
     {
         _context = context;
+        _unitOfWork = unitOfWork;
     }
     
     public async Task<BaseMessage<Book>> CreateBook(Book book)
@@ -25,7 +33,8 @@ public class BookService : IBookService
             ISBN13 = book.ISBN13,
             Published = book.Published,
             Edition = book.Edition,
-            DeweyIndex = book.DeweyIndex
+            DeweyIndex = book.DeweyIndex,
+            AuthorId = book.AuthorId
         };
 
         try
@@ -45,44 +54,51 @@ public class BookService : IBookService
     /// Busca todos los libros en la Base de datos.
     /// </summary>
     /// <returns>Lista de string.</returns>
-    public async Task<IEnumerable<Book>> GetAllBooks()
+    public async Task<BaseMessage<Book>> GetAllBooks()
     {
-        return _context.Books.ToList();
+        //var result = await _context.Books.Include(a => a.Author).ToListAsync();
+        var result = await _unitOfWork.BookRepository.GetAllAsync();
+        return result.Any() ? Utilities.Utilities.BuildResponse<Book>(HttpStatusCode.OK, BaseMessageStatus.OK_200, result.ToList()) :
+            Utilities.Utilities.BuildResponse(HttpStatusCode.NotFound, BaseMessageStatus.BOOK_NOT_FOUND, new List<Book>());
     }
 
-    public async Task<IEnumerable<Book>> GetById(int id)
+    public async Task<BaseMessage<Book>> GetById(int id)
     {
-        if(id <= 0)
-        {
-            return new List<Book>();
-        }
+
         // Lista de libros
-        var list = Utilities.Utilities.CreateABooksList();
-
-        // LINQ
-        var samir = list.Where(x => x.Id == id);
-
-
-        return samir;
+        //var book = await _context.Books.FindAsync(id);
+        var book = await _unitOfWork.BookRepository.FindAsync(id);
+        return book != null ? Utilities.Utilities.BuildResponse(HttpStatusCode.OK, BaseMessageStatus.OK_200, new List<Book>(){book}) :
+            Utilities.Utilities.BuildResponse(HttpStatusCode.NotFound, BaseMessageStatus.BOOK_NOT_FOUND, new List<Book>());
     }
 
     public async Task<IEnumerable<Book>> GetByName(string name)
     {
-        var heidy =  Utilities.Utilities.CreateABooksList()
-            .Where(X => X.Title.Contains(name, StringComparison.InvariantCultureIgnoreCase));
-        return heidy;
+       //var list = await _context.Books.Where(x => x.Title.Contains(name, StringComparison.InvariantCultureIgnoreCase)).ToListAsync();
+       var list = await _unitOfWork.BookRepository.GetAllAsync(x => x.Title.Contains(name, StringComparison.InvariantCultureIgnoreCase));
+       return list;
+    }
+
+    public async Task<BaseMessage<Book>> GetByAuthor(int AuthorId)
+    {
+        var bookList = await _context.Books.Where(x => x.AuthorId == AuthorId).ToListAsync();
+        return bookList.Any() ? Utilities.Utilities.BuildResponse(HttpStatusCode.OK, BaseMessageStatus.OK_200, bookList) :
+            Utilities.Utilities.BuildResponse(HttpStatusCode.NotFound, BaseMessageStatus.BOOK_NOT_FOUND, new List<Book>());;
+    }
+
+    public async Task<BaseMessage<Book>> GetByAuthor(string name)
+    {        
+        var bookList = await _context.Books
+        .Where(x => x.Author.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase))
+        .ToListAsync();
+        return bookList.Any() ? Utilities.Utilities.BuildResponse(HttpStatusCode.OK, BaseMessageStatus.OK_200, bookList) :
+            Utilities.Utilities.BuildResponse(HttpStatusCode.NotFound, BaseMessageStatus.BOOK_NOT_FOUND, new List<Book>());;
     }
 
     public async Task<IEnumerable<Book>> Update(Book book)
     {
-        var sara = Utilities.Utilities.CreateABooksList();
-        var updatedBook = sara.Where(x => x.Id == book.Id).FirstOrDefault();
-        sara.RemoveAt(book.Id);
-        //sara.Remove(updatedBook);
-        updatedBook.Published = book.Published;        
-        sara.Add(updatedBook);
-        return sara;
+        
+        throw new NotImplementedException();
     }
-    
-    
+
 }

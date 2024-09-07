@@ -22,7 +22,7 @@ public class BooksController : ControllerBase
     {
         var response = await _bookService.GetAllBooks();
         //return await _bookService.GetAllBooks();
-        return response.Count() > 0 ? Ok(response) : StatusCode(StatusCodes.Status204NoContent, "Aqui no hay es na'");
+        return response.TotalElements > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, response);
     }
 
     [HttpGet]
@@ -30,7 +30,7 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var response = await _bookService.GetById(id);
-        return response.Count() > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, "No se lo conseguí");
+        return response.TotalElements > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, "No se lo conseguí");
     }
 
     [HttpGet]
@@ -39,6 +39,14 @@ public class BooksController : ControllerBase
     {
         var response = await _bookService.GetByName(name);
         return response.Count() > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, "No se lo conseguí");
+    }
+
+    [HttpPost]
+    [Route("GetByAuthorsName")]
+    public async Task<IActionResult> GetByAuthorsName(string name)
+    {
+        var response = await _bookService.GetByAuthor(name);
+        return response.TotalElements > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, "No se lo conseguí");
     }
 
     [HttpPost]
@@ -54,6 +62,7 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> Create(Book book)
     {
         var response = await _bookService.CreateBook(book);
-        return response.StatusCode == System.Net.HttpStatusCode.OK ? Ok(response) : StatusCode((int)response.StatusCode, response);
+        return response.StatusCode == System.Net.HttpStatusCode.OK ? Ok(response) : 
+            StatusCode((int)response.StatusCode, response);
     }
 }

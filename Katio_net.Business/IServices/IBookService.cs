@@ -21,4 +21,6 @@ public interface IBookService
     Task<BaseMessage<Book>> CreateBook(Book books);
 
     Task<IEnumerable<Book>> Update(Book book);
+
+    Task<BaseMessage<Book>> GetAllBooksByAuthorName(string Name);
 }

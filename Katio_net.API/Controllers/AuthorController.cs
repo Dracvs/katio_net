@@ -4,6 +4,8 @@ using Katio.Business.Interfaces;
 using System.Net;
 using Katio_net.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace Katio.API.Controllers;
 
@@ -27,5 +29,13 @@ public class AuthorController : ControllerBase
         //var response = await _context.Authors.ToListAsync();
         //return await _bookService.GetAllBooks();
         return response.TotalElements > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, response);
+    }
+
+    [HttpPost]
+    [Route("Create")]
+    public async Task<IActionResult> Create(Author author)
+    {
+        Console.WriteLine("reached Here");
+        return Ok();
     }
 }

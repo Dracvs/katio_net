@@ -49,6 +49,14 @@ public class BooksController : ControllerBase
         return response.TotalElements > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, "No se lo conseguí");
     }
 
+    [HttpGet]
+    [Route("GetAllMixedIn")]
+    public async Task<IActionResult> GetAllMixed(string name)
+    {
+        var response = await _bookService.GetAllBooksByAuthorName(name);
+        return response.TotalElements > 0 ? Ok(response) : StatusCode(StatusCodes.Status404NotFound, "No se lo conseguí");
+    }
+
     [HttpPost]
     [Route("Update")]
     public async Task<IActionResult> Update(Book book)

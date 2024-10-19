@@ -7,4 +7,6 @@ public interface IAuthorService
 {
     Task<BaseMessage<Author>> CreateAuthor(Author author);
     Task<BaseMessage<Author>> GetAllAuthors();
+    Task<BaseMessage<Author>>CreateAFelipe(Author author);
+    Task<BaseMessage<Author>> Update(Author author);
 }

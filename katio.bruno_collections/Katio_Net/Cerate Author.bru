@@ -1,0 +1,21 @@
+meta {
+  name: Cerate Author
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5170/api/Author/Create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Lucho",
+    "lastName": "Robles",
+    "country": "Colombia",
+    "birthDate":"1983-10-25"
+    
+  }
+}

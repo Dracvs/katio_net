@@ -62,6 +62,15 @@ public class BookService : IBookService
             Utilities.Utilities.BuildResponse(HttpStatusCode.NotFound, BaseMessageStatus.BOOK_NOT_FOUND, new List<Book>());
     }
 
+    public async Task<BaseMessage<Book>> GetAllBooksByAuthorName(string Name)
+    {
+        var result = await _unitOfWork.BookRepository.GetAllAsync(
+            x => x.Author.Name.ToLower().Contains(Name));
+            
+        return result.Any() ? Utilities.Utilities.BuildResponse<Book>(HttpStatusCode.OK, BaseMessageStatus.OK_200, result.ToList()) :
+            Utilities.Utilities.BuildResponse(HttpStatusCode.NotFound, BaseMessageStatus.BOOK_NOT_FOUND, new List<Book>());
+    }
+
     public async Task<BaseMessage<Book>> GetById(int id)
     {
 

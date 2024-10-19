@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katio_net.Business", "Katio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katio_net.Data", "Katio_net.Data\Katio_net.Data.csproj", "{28A8CE19-2337-4FD5-B685-F78377D11CCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Katio.Tests", "Katio.Tests\Katio.Tests.csproj", "{3AAEB528-9E2A-402E-901B-E79DDD2FE8B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{28A8CE19-2337-4FD5-B685-F78377D11CCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28A8CE19-2337-4FD5-B685-F78377D11CCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28A8CE19-2337-4FD5-B685-F78377D11CCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AAEB528-9E2A-402E-901B-E79DDD2FE8B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AAEB528-9E2A-402E-901B-E79DDD2FE8B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AAEB528-9E2A-402E-901B-E79DDD2FE8B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AAEB528-9E2A-402E-901B-E79DDD2FE8B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

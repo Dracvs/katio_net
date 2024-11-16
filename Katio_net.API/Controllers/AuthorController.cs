@@ -38,4 +38,11 @@ public class AuthorController : ControllerBase
         Console.WriteLine("reached Here");
         return Ok();
     }
+
+    [HttpPost]
+    [Route("SearchBar")]
+    public async Task<IActionResult> SearchBar(Author author)
+    {
+        return Ok();
+    }
 }

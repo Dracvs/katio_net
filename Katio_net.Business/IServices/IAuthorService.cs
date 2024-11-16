@@ -9,4 +9,5 @@ public interface IAuthorService
     Task<BaseMessage<Author>> GetAllAuthors();
     Task<BaseMessage<Author>>CreateAFelipe(Author author);
     Task<BaseMessage<Author>> Update(Author author);
+    Task<BaseMessage<Author>> SearchBar(Author author);
 }

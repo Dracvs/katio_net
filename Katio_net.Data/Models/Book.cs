@@ -10,9 +10,15 @@ public class Book : BaseEntity<int>
     public DateTime Published{get;set;}
     public string Edition{get; set;} = "";
     public string DeweyIndex{get; set;} = "";
+    public string Cover {get;set;} ="";
 
     [ForeignKey("Author")]
     public int AuthorId {get; set;}
 
     public virtual Author? Author{ get; set;}
+
+    public bool Any()
+    {
+        return Id > 0;
+    }
 }

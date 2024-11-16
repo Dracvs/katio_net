@@ -34,7 +34,8 @@ public class BookService : IBookService
             Published = book.Published,
             Edition = book.Edition,
             DeweyIndex = book.DeweyIndex,
-            AuthorId = book.AuthorId
+            AuthorId = book.AuthorId,
+            Cover = book.Cover
         };
 
         try

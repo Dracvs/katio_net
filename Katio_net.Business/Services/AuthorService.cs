@@ -134,5 +134,37 @@ public class AuthorService : IAuthorService
 
         return Utilities.Utilities.BuildResponse(HttpStatusCode.OK, BaseMessageStatus.OK_200, new List<Author> { author });
     }
+
+    public async Task<BaseMessage<Author>> SearchBar(Author author)
+    {
+        
+        // Búsqueda exclusiva
+        var result = await _unitOfWork.AuthorRepository.GetAllAsync(
+            x => x.Name.Equals(author.Name)
+        );
+
+        // Búsqueda inclusiva
+        result = await _unitOfWork.AuthorRepository.GetAllAsync(
+            x => x.Name.Contains(author.Name)
+        );
+
+        // busqueda omnisciente inclusiva
+        result = await _unitOfWork.AuthorRepository.GetAllAsync(
+            x => x.Name.Contains(author.Name) 
+            && x.LastName.Contains(author.LastName)
+            && x.Country.Contains(author.Country)
+            && x.Id.Equals(author.Id)
+        );
+
+        if(author.Name.Contains("Sara") && 
+        author.LastName.Contains("Castrillon") || 
+        author.Country.Contains("Colombia"))
+        {
+
+        }
+
+       return result.Any() ? Utilities.Utilities.BuildResponse<Author>(HttpStatusCode.OK, BaseMessageStatus.OK_200, result.ToList()) :
+            Utilities.Utilities.BuildResponse(HttpStatusCode.NotFound, BaseMessageStatus.BOOK_NOT_FOUND, new List<Author>());
+    }
 }
     
